@@ -15,5 +15,5 @@ wss.on('connection', function connection(ws) {
 });
 */
  
-server.listen(80);
+server.listen(5000);
 console.log("test")
