@@ -1,18 +1,17 @@
-
-const express = require('express');
-const socketIO = require('socket.io');
-
-const PORT = process.env.PORT || 3000;
-
-const server = express()
-  .use((req, res) => res.send(200) )
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
-
-const io = socketIO(server);
-
-io.on('connection', (socket) => {
-  console.log('Client connected');
-  socket.on('disconnect', () => console.log('Client disconnected'));
+const http = require('http');
+const WebSocket = require('ws');
+ 
+const server = http.createServer();
+const wss = new WebSocket.Server({ server });
+ 
+wss.on('connection', function connection(ws) {
+  ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+    ws.send('HOO');
+  });
+ 
+  ws.send('something');
 });
 
-setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+ 
+server.listen(process.env.PORT);
