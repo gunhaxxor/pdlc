@@ -18,4 +18,4 @@ wss.on('connection', function connection(ws) {
 });
 
  
-server.listen(process.env.PORT);
+server.listen(process.env.PORT || 80);
