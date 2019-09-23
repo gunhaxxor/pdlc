@@ -1,8 +1,8 @@
 const http = require('http');
-//const WebSocket = require('ws');
+const WebSocket = require('ws');
  
 const server = http.createServer();
-/*
+
 const wss = new WebSocket.Server({ server });
  
 wss.on('connection', function connection(ws) {
@@ -13,7 +13,7 @@ wss.on('connection', function connection(ws) {
  
   ws.send('something');
 });
-*/
+
  
 server.listen(5000);
 console.log("test")
