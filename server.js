@@ -1,4 +1,4 @@
-const http = require('http');
+/*const http = require('http');
 const WebSocket = require('ws');
  
 const server = http.createServer();
@@ -14,4 +14,5 @@ wss.on('connection', function connection(ws) {
 });
 
  
-server.listen(80);
+server.listen(80);*/
+console.log("test")
