@@ -15,5 +15,5 @@ wss.on('connection', function connection(ws) {
 });
 
  
-server.listen(5000);
+server.listen(process.env.PORT);
 console.log("test")
