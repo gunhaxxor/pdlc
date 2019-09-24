@@ -1,5 +1,41 @@
-const matrixSizeX = 4
-const matrixSizeY = 5
+const socket = new WebSocket('ws://192.168.1.135:80');
+
+let newClient = true
+
+socket.addEventListener('open', function (event) {
+    socket.send('socket open');
+});
+
+socket.addEventListener('message', function (event) {
+    console.log('Message from server ', event.data);
+    if(event.data == 'socket open'){
+        if(!newClient){
+            for (var i = 0; i < buttons.length; i++) {
+                for(var j = 0; j < buttons[i].length; j++){
+                    if(buttons[i][j].on == true){
+                        socket.send(JSON.stringify({x: buttons[i][j].posX, y: buttons[i][j].posY, state: buttons[i][j].on}))
+                    }
+                }
+            }
+        }
+        
+    }else{
+        try {
+            var message = JSON.parse(event.data)
+            buttons[message.x][message.y].changeState(message.state)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+});
+
+function sendData(data){
+    socket.send(data);
+    newClient = false
+}
+
+const matrixSizeX = 32
+const matrixSizeY = 32
 
 let smallestSide
 
@@ -18,7 +54,7 @@ function setup(){
 }
 
 function draw(){
-    background(175);
+    background(255);
     // Show all the buttons
     for (var i = 0; i < buttons.length; i++) {
         for(var j = 0; j < buttons[i].length; j++){
@@ -64,8 +100,12 @@ function Button(tempX, tempY, tempW, tempH, posX, posY)  {
       if (!this.on) {
         fill(175);
       } else {
-        fill(0);
+        fill(255);
       }
       rect(this.x,this.y,this.w,this.h);
     } 
-  }
+
+    this.changeState = function(newState){
+        this.on = newState
+    }
+}
