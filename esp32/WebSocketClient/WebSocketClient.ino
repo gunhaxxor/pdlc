@@ -5,7 +5,7 @@ const char* ssid     = "Interactive";
 const char* password = "wecanbuildit";
  
 char path[] = "/";
-char host[] = "pdlc.herokuapp.com";
+char host[] = "192.168.1.135";
  
 WebSocketClient webSocketClient;
 WiFiClient client;
@@ -48,7 +48,7 @@ void loop() {
  
   if (client.connected()) {
  
-    webSocketClient.sendData("HEYYY");
+    //webSocketClient.sendData("HEYYY");
  
     webSocketClient.getData(data);
     if (data.length() > 0) {
@@ -58,8 +58,9 @@ void loop() {
  
   } else {
     Serial.println("Client disconnected.");
+    delay(10000);
   }
  
-  delay(3000);
+  delay(100);
  
 }
