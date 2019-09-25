@@ -24,6 +24,7 @@ WiFiClient client;
 
 uint8_t dmxbuffer[DMX_MAX_FRAME];
 
+//for json parsing
 StaticJsonDocument<58> doc;
  
 void setup() {
@@ -105,7 +106,7 @@ void parseData(String json){
 
   dmxbuffer[x * matrixSizeX + y] = (state ? 255 : 0);
 
-  Serial.print("dxm: ");
+  Serial.print("dmx: ");
   Serial.print(x * matrixSizeX + y);
   Serial.print(" = ");
   Serial.println(state ? 255 : 0);
