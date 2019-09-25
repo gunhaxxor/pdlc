@@ -34,8 +34,8 @@ function sendData(data){
     newClient = false
 }
 
-const matrixSizeX = 32
-const matrixSizeY = 32
+const matrixSizeX = 2
+const matrixSizeY = 2
 
 let smallestSide
 
