@@ -104,7 +104,7 @@ void parseData(String json){
   y++;
   bool state = doc["state"];
 
-  dmxbuffer[x * matrixSizeX + y] = (state ? 255 : 0);
+  dmxbuffer[x * matrixSizeX + y] = (state ? 1 : 0);
 
   Serial.print("dmx: ");
   Serial.print(x * matrixSizeX + y);
