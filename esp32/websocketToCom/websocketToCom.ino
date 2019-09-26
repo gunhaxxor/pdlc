@@ -71,6 +71,8 @@ void loop() {
     delay(10000);
   }
 
+  printHex(output);
+
   delay(100);
 }
 
@@ -96,8 +98,6 @@ void parseData(String json) {
   } else {
     output &= ~(1 << (x * matrixSizeX + y));
   }
-
-  printHex(output);
 
   delay(100);
 }
