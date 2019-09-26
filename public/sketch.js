@@ -78,6 +78,7 @@ function Button(tempX, tempY, tempW, tempH, posX, posY)  {
     this.y  = tempY;   
     this.w  = tempW;   
     this.h  = tempH;
+    //where in the matrix it is located
     this.posX = posX;
     this.posY = posY;   
     // Is the button on or off?
