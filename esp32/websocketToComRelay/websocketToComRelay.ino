@@ -19,14 +19,11 @@ WebSocketClient webSocketClient;
 WiFiClient client;
 
 //for json parsing
-StaticJsonDocument<58> doc;
-
-unsigned long output1;
-unsigned long output2;
+StaticJsonDocument<64> doc;
 
 void setup() {
   Serial.begin(115200);
-  Serial1.begin(9600);
+  //Serial1.begin(9600);
   Serial2.begin(9600);
 
   WiFi.begin(ssid, password);
@@ -90,16 +87,19 @@ void parseData(String json) {
   }
 
   int id = doc["id"];
-  int values = doc["values"];
+  unsigned int values = doc["values"];
 
   if (id == serial1Id) {
     char str[20];
     sprintf(str, "%08x", values);
-    Serial1.println((String)"H" + str);
+    //Serial1.println((String)"H" + str);
+    Serial.println(str);
   } else if(id == serial2Id) {
-    char str[20];
+    char str[32];
     sprintf(str, "%08x", values);
+    //printf("H%04x%04x", valuepart1, valuesPart2);
     Serial2.println((String)"H" + str);
+    Serial.println((String)"H" + str);
   }
 
 }

@@ -181,5 +181,5 @@ function scrollForward(){
     sendValues()
     scrollState++
     if(scrollState < rows[0].length+matrixSizeX)
-    setTimeout(scrollForward, 1000);
+    setTimeout(scrollForward, 2000);
 }
