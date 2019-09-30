@@ -9,6 +9,9 @@ const char* password = "wecanbuildit";
 const int matrixSizeX = 5;
 const int matrixSizeY = 5;
 
+const int serial1Id = 0;
+const int serial2Id = 1;
+
 char path[] = "/";
 char host[] = "192.168.1.135";
 
@@ -18,10 +21,12 @@ WiFiClient client;
 //for json parsing
 StaticJsonDocument<58> doc;
 
-unsigned long output;
+unsigned long output1;
+unsigned long output2;
 
 void setup() {
   Serial.begin(115200);
+  Serial1.begin(9600);
   Serial2.begin(9600);
 
   WiFi.begin(ssid, password);
@@ -70,9 +75,7 @@ void loop() {
     Serial.println("Client disconnected.");
     delay(10000);
   }
-  if(millis()%500 < 2){
-    printHex(output);
-  }
+  delay(10);
 }
 
 void parseData(String json) {
@@ -86,22 +89,17 @@ void parseData(String json) {
     return;
   }
 
-  int x = doc["x"];
-  int y = doc["y"];
-  bool state = doc["state"];
+  int id = doc["id"];
+  int values = doc["values"];
 
-  if (state) {
-    output |= (1 << (y * matrixSizeX + x));
-  } else {
-    output &= ~(1 << (y * matrixSizeX + x ));
+  if (id == serial1Id) {
+    char str[20];
+    sprintf(str, "%08x", values);
+    Serial1.println((String)"H" + str);
+  } else if(id == serial2Id) {
+    char str[20];
+    sprintf(str, "%08x", values);
+    Serial2.println((String)"H" + str);
   }
 
-}
-
-//send hex to controller
-void printHex(int val) {
-  char str[20];
-  sprintf(str, "%08x", val);
-  Serial2.println((String)"H" + str);
-  Serial.println(str);
 }
