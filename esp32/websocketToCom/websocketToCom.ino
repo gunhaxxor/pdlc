@@ -6,8 +6,8 @@ const char* ssid     = "Interactive";
 const char* password = "wecanbuildit";
 
 //glass matrix size
-const int matrixSizeX = 2;
-const int matrixSizeY = 2;
+const int matrixSizeX = 5;
+const int matrixSizeY = 5;
 
 char path[] = "/";
 char host[] = "192.168.1.135";
@@ -62,7 +62,7 @@ void loop() {
     if (data.length() > 0) {
       Serial.print("Received data: ");
       Serial.println(data);
-      //parse data and send over dmx
+      //parse data and send over com port
       parseData(data);
     }
 
@@ -70,10 +70,9 @@ void loop() {
     Serial.println("Client disconnected.");
     delay(10000);
   }
-
-  printHex(output);
-
-  delay(100);
+  if(millis()%500 < 2){
+    printHex(output);
+  }
 }
 
 void parseData(String json) {
@@ -89,17 +88,14 @@ void parseData(String json) {
 
   int x = doc["x"];
   int y = doc["y"];
-  x++;
-  y++;
   bool state = doc["state"];
 
   if (state) {
-    output |= (1 << (x * matrixSizeX + y));
+    output |= (1 << (y * matrixSizeX + x));
   } else {
-    output &= ~(1 << (x * matrixSizeX + y));
+    output &= ~(1 << (y * matrixSizeX + x ));
   }
 
-  delay(100);
 }
 
 void printHex(int val) {
