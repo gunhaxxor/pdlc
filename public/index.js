@@ -60,9 +60,6 @@ function sendData(data){
 const matrixSizeX = 11
 const matrixSizeY = 11
 
-//enable scaling of scrolling text
-const textScaling = true
-
 let smallestSide
 
 var buttons = new Array(matrixSizeX)
@@ -160,22 +157,15 @@ function scrollingText(){
     for(var i = 0; i < matrixSizeX/4; i++){
         text.unshift(' ')
     }
-    rows = new Array(5)
+    rows = new Array(5*Math.floor(matrixSizeY/5))
     scrollState = 0
     for(var i = 0; i < rows.length; i++){
         rows[i] = []
         for(var j = 0; j < text.length; j++){
-            rows[i] = rows[i].concat(letters[text[j]][i])
+            rows[i] = rows[i].concat(letters[text[j]][Math.floor(i/Math.floor(matrixSizeY/5))])
         }
     }
 
-    /*if(textScaling){
-        //for(var i = 0; i < Math.floor(matrixSizeY/5); i++){
-            for(var j = 1; j <= 10; j+=2){
-                rows.splice(j, 0, rows[j]);
-            }  
-        //}
-    }*/
     console.log(rows)
     scrollForward()
 }
@@ -184,11 +174,12 @@ function scrollForward(){
     for(var i = 0; i < matrixSizeX; i++){
         if(scrollState+i > 0){
             for(var j = 0; j < rows.length; j++){
-                buttons[i][j].changeState(rows[j][scrollState+i], true)
+                buttons[i][j].changeState(rows[j][scrollState+Math.floor(i/Math.floor(matrixSizeY/5))], false)
             }
         }
     }
+    sendValues()
     scrollState++
     if(scrollState < rows[0].length+matrixSizeX)
-    setTimeout(scrollForward, 3000);
+    setTimeout(scrollForward, 1000);
 }
