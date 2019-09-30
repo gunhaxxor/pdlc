@@ -22,7 +22,7 @@ socket.addEventListener('message', function (event) {
     }else{
         try {
             var message = JSON.parse(event.data)
-            buttons[message.x][message.y].changeState(message.state)
+            buttons[message.x][message.y].changeState(message.state, false)
         } catch (error) {
             console.log(error)
         }
@@ -89,7 +89,7 @@ function Button(tempX, tempY, tempW, tempH, posX, posY)  {
       // Check to see if a point is inside the rectangle
       if (mx > this.x && mx < this.x + this.w && my > this.y && my < this.y + this.h) {
         this.on = !this.on;
-        sendData(JSON.stringify({x: this.posX, y: this.posY, state: this.on}))
+        this.sendState()
       }
     };
   
@@ -106,8 +106,18 @@ function Button(tempX, tempY, tempW, tempH, posX, posY)  {
       rect(this.x,this.y,this.w,this.h);
     } 
 
-    this.changeState = function(newState){
-        this.on = newState
+    this.changeState = function(newState, send){
+        if(this.on != newState && send){
+            this.on = newState
+            this.sendState()
+        }else{
+            this.on = newState
+        }
+        
+    }
+
+    this.sendState = function(){
+        sendData(JSON.stringify({x: this.posX, y: this.posY, state: this.on}))
     }
 }
 
@@ -386,11 +396,11 @@ var letters = {
         [1,1,1, 0]
     ],
     ' ': [
-        [, , ,],
-        [, , ,],
-        [, , ,],
-        [, , ,],
-        [, , ,]
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
     ]
 }
 
@@ -404,10 +414,8 @@ var scrollState = 0-matrixSizeX
 function scrollingText(){
     var text = document.getElementById("textInput").value.toUpperCase()
     text = text.split('')
-    for(var i = 0; i < matrixSizeX; i++){
-        if(i % 2 == 0){
-            text.unshift(' ')
-        }
+    for(var i = 0; i < matrixSizeX/4; i++){
+        text.unshift(' ')
     }
     rows = new Array(5)
     scrollState = 0
@@ -424,12 +432,12 @@ function scrollingText(){
 function scrollForward(){
     for(var i = 0; i < matrixSizeX; i++){
         if(scrollState+i > 0){
-            for(var j = 0; j < buttons[i].length; j++){
-                buttons[i][j].changeState(rows[j][scrollState+i])
+            for(var j = 0; j < 5; j++){
+                buttons[i][j].changeState(rows[j][scrollState+i], true)
             }
         }
     }
     scrollState++
     if(scrollState < rows[0].length+matrixSizeX)
-    setTimeout(scrollForward, 300);
+    setTimeout(scrollForward, 3000);
 }
