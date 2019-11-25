@@ -1,0 +1,20 @@
+{
+  "name": "glaspixel-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "bin": "bin.js",
+  "scripts": {
+    "postinstall": "npm install --prefix vue-frontend && npm run build --prefix vue-frontend",
+    "start": "node server.js",
+    "build-and-run": "npm run build --prefix vue-frontend && npm run start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "internal-ip": "^5.0.0",
+    "request": "^2.88.0",
+    "ws": "^7.1.2"
+  }
+}
